@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing dependencies...
+  build:
+    commands:
+      - echo Hello from CodeBuild!
+      - echo Build successful > build_output.txt
+artifacts:
+  files:
+    - '**/*'

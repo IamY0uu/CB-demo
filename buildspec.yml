@@ -1,15 +1,1 @@
-version: 0.2
 
-phases:
-  install:
-    runtime-versions:
-      nodejs: 16
-    commands:
-      - npm install
-  build:
-    commands:
-      - echo "No build step needed for NodeJS API"
-
-artifacts:
-  files:
-    - '**/*'

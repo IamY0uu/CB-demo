@@ -3,14 +3,20 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to DockerHub...
-      - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.ap-south-1.amazonaws.com
+
   build:
     commands:
+      - echo Build started on `date`
       - docker build -t sample-nodejs-app .
       - docker tag sample-nodejs-app:latest 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
+      - docker images  # for debug - shows local images
+
   post_build:
     commands:
+      - echo Build completed on `date`
+      - echo Pushing Docker image to Amazon ECR...
       - docker push 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
 
 artifacts:

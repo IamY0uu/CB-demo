@@ -9,6 +9,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - ls -al
+      - cat Dockerfile
       - docker build -t sample-nodejs-app .
       - docker tag sample-nodejs-app:latest 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
       - docker images  # for debug - shows local images

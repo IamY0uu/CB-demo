@@ -4,22 +4,17 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.ap-south-1.amazonaws.com)
-      - REPOSITORY_URI=123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.ap-south-1.amazonaws.com
   build:
     commands:
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-
+      - echo Build started on `date`
+      - docker build -t sample-nodejs-app .
+      - docker tag sample-nodejs-app:latest 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
   post_build:
     commands:
       - echo Pushing the Docker image...
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '[{"name":"sample-nodejs-container","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-
+      - docker push 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
 artifacts:
   files:
-    - imagedefinitions.json
+    - '**/*'
+

@@ -9,18 +9,18 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - ls -al
-      - cat Dockerfile
       - docker build -t sample-nodejs-app .
       - docker tag sample-nodejs-app:latest 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
-      - docker images  # for debug - shows local images
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing Docker image to Amazon ECR...
       - docker push 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
+      - echo Writing image definitions file...
+      - |
+        printf '[{"name":"sample-nodejs-app","imageUri":"123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest"}]' > imagedefinitions.json
 
 artifacts:
   files:
-    - '**/*'
+    - imagedefinitions.json

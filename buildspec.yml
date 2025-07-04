@@ -5,8 +5,8 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 438465134214.dkr.ecr.us-east-1.amazonaws.com
-      - REPOSITORY_URI=438465134214.dkr.ecr.us-east-1.amazonaws.com/nodejs-application
-      - IMAGE_TAG=latest
+      - export REPOSITORY_URI=438465134214.dkr.ecr.us-east-1.amazonaws.com/nodejs-application
+      - export IMAGE_TAG=latest
   build:
     commands:
       - echo Building the Docker image...

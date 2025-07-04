@@ -3,8 +3,9 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo Logging in to DockerHub...
+      - echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
       - echo Logging in to Amazon ECR...
-      - pwd
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.ap-south-1.amazonaws.com
 
   build:
@@ -19,8 +20,7 @@ phases:
       - echo Pushing Docker image to Amazon ECR...
       - docker push 123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest
       - echo Writing image definitions file...
-      - |
-        printf '[{"name":"sample-nodejs-app","imageUri":"123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest"}]' > imagedefinitions.json
+      - printf '[{"name":"sample-nodejs-app","imageUri":"123456789012.dkr.ecr.ap-south-1.amazonaws.com/sample-nodejs-app:latest"}]' > imagedefinitions.json
 
 artifacts:
   files:
